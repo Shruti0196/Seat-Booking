@@ -17,8 +17,10 @@ const Dashboard = () => {
             try {
                 const token = localStorage.getItem('authToken');
 
-                if (!token)
+                if (!token) {
                     router.push('/login')
+                    return;
+                }
                 const response = await axios.get("http://localhost:5000/booking/seats", {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("authToken")}`,

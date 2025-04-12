@@ -1,5 +1,6 @@
 import pool from '../models/db.js';
 
+// Fetch all seats from the database ordered by seat_number
 export const getSeats = async (req, res) => {
     const result = await pool.query('SELECT * FROM seats ORDER BY seat_number');
     const seats = result.rows;
@@ -15,12 +16,14 @@ export const book = async (req, res) => {
             'SELECT * FROM seats ORDER BY row_number, seat_number'
         );
 
+        // Organize seats by rows
         const rows = {};
         for (const seat of allSeats) {
             if (!rows[seat.row_number]) rows[seat.row_number] = [];
             rows[seat.row_number].push(seat);
         }
 
+        // Find the seats to be booked by their ids
         for (const rowNum in rows) {
             const row = rows[rowNum];
             const availableSeats = row.filter(seat => !seat.is_booked);
@@ -31,11 +34,13 @@ export const book = async (req, res) => {
             }
         }
 
+        //Check if required seats are availabe or not
         const available = allSeats.filter(seat => !seat.is_booked).slice(0, seatCount);
         if (available.length < seatCount) {
             return res.status(400).json({ message: 'Not enough seats available' });
         }
 
+        //Book from the available seats
         const seatIdsToBook = available.map(s => s.id);
         await bookTheseSeats(seatIdsToBook, userId);
         return res.json({ message: 'Nearby seats booked', seatIds: seatIdsToBook });
