@@ -21,7 +21,7 @@ const Dashboard = () => {
                     router.push('/login')
                     return;
                 }
-                const response = await axios.get(`${env.BACKEND_URL}/booking/seats`, {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/booking/seats`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
                     },

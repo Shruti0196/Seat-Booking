@@ -19,7 +19,7 @@ export default function SignUp() {
         };
 
         try {
-            const response = await fetch(`${env.BACKEND_URL}/auth/signup`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
