@@ -7,7 +7,7 @@ import { verifyToken } from './routes/auth.js';
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.CORS_ORIGIN,
     methods: 'GET,POST',
     allowedHeaders: 'Content-Type,Authorization',
 }));
@@ -16,7 +16,7 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 
 app.use('/booking', verifyToken, bookingRoutes);
-app.listen(5000, () => {
+app.listen(process.env.PORT, () => {
     console.log('Backend server is running on http://localhost:5000');
 });
 export default app;
